@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.IdentityModel.Tokens;
 using MinimalAuthentication.API;
 
@@ -6,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton(new JwtTokenGenerator(builder.Configuration["JWTToken:Key"], builder.Configuration));
 builder.Services.AddAuthentication("Bearer")
@@ -26,6 +28,12 @@ builder.Services.AddAuthorization();
 
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
