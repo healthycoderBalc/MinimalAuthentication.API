@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MinimalAuthentication.API.Models;
 
-namespace MinimalAuthentication.API
+namespace MinimalAuthentication.API.Controllers
 {
     [Route("api")]
     [ApiController]

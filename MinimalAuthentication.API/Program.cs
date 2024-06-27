@@ -1,7 +1,13 @@
 using Microsoft.IdentityModel.Tokens;
+using MinimalAuthentication.API;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSingleton(new JwtTokenGenerator(builder.Configuration["JWTToken:Key"], builder.Configuration));
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(options =>
     {
@@ -16,12 +22,15 @@ builder.Services.AddAuthentication("Bearer")
                 Convert.FromBase64String(builder.Configuration["JWTToken:Key"]))
         };
     });
+builder.Services.AddAuthorization();
 
 
 var app = builder.Build();
 
+app.UseHttpsRedirection();
 app.UseAuthentication();
+app.UseAuthorization();
 
-app.MapGet("/", () => "Hello World!");
+app.MapControllers();
 
 app.Run();
