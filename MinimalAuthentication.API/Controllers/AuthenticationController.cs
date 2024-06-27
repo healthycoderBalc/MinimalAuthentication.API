@@ -26,7 +26,7 @@ namespace MinimalAuthentication.API.Controllers
             }
 
             var token = _jwtTokenGenerator.GenerateToken(model.Username);
-            return Ok(token);
+            return Ok(new { Token = token });
         }
 
         [Authorize]
